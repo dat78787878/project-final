@@ -1,6 +1,4 @@
 import scrapy
-
-
 class ExampleSpider(scrapy.Spider):
     name = 'example'
     page_number = 2
@@ -20,13 +18,13 @@ class ExampleSpider(scrapy.Spider):
             yield response.follow(next_page, callback=self.parse)
 
     def start_scraping(self, response):
-        # 
-        for comment in response.css('q.QewHA span::text').getall():
+       
+        for comment in response.css('div.pBbQr'):
             yield {
-                # 
                 'hotel_name': response.css('h1.QdLfr::text').get(),
-                'comment': comment,
-                'source_name': 'Tripadvisor.com'
+                'user_name': comment.css('a.uyyBf::text').get(),
+                'time_comment': comment.css('span.teHYY::text').get(),
+                'comment_detail':  comment.css('q.QewHA span::text').get(),
             }
 
         next_page =  response.css('a.next::attr(href)').get()

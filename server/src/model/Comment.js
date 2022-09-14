@@ -3,10 +3,8 @@ const Schema = mongoose.Schema;
 
 const Comment = new Schema(
     {
-        source_name: { type: String },
-        hotel_id: { type: String },
         hotel_name: { type: String },
-        comment: { type: Array },
+        comment_detail: { type: Array },
     },
 
     {

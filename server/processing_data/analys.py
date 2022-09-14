@@ -4,14 +4,15 @@ from pymongo import MongoClient
 from pyvi import ViTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import NMF
-
+conn = MongoClient("mongodb://localhost:27017")
+db = conn['project_db']
 # Step 0: Load data into list
-f = open('../comment/comment.json', encoding="utf8")
-comment_items = json.load(f)
+comment_items = db.comments
+comment_items = list(comment_items.find())
 
 # Step 1: Load data into Dataframe
-df = pd.read_json('../comment/comment.json', encoding="utf8")
-comments = df.comment
+comments = pd.DataFrame(comment_items)
+comments = comments.comment_detail
 
 # Step 2: Tokenizer
 def tokenize(n):
@@ -19,7 +20,7 @@ def tokenize(n):
 
 data = list(map(tokenize, comments))
 
-# Step 3: Vectorize
+#Step 3: Vectorize
 
 no_features = 1000
 tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=no_features, stop_words='english')     
@@ -50,11 +51,12 @@ no_top_words = 20
 
 display_topics(nmf_H, nmf_W, tfidf_feature_names, data, no_top_words)
 
+
 # Step 7: Output file
 # with open("data_comment.json", "w", encoding='utf8') as f:
 #     json.dump(result, f, ensure_ascii=False)
-conn = MongoClient("mongodb://localhost:27017")
-db = conn['project_db']
+
 collection = db['comments']
+collection.drop()
 collection.insert_many(result)
 

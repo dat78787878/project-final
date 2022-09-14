@@ -11,4 +11,6 @@ class HotelItem(scrapy.Item):
     hotel_name = scrapy.Field()
     hotel_addr = scrapy.Field()
     hotel_imagelink = scrapy.Field()
-    source = scrapy.Field()
+    hotel_orderlink  = scrapy.Field()
+   
+

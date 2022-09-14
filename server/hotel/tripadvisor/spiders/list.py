@@ -22,17 +22,11 @@ class BookingSpider(scrapy.Spider):
 
     def start_scraping(self, response):
         item = HotelItem()
-
         item['hotel_name'] =  response.css('h1.b::text').get()
         item['hotel_addr'] = response.css('span.PTrfg::text').get()
         item['hotel_imagelink'] = response.css('img::attr(src)').getall()[5]
-        item['source'] = []
-        for source in response.css('div.ui_columns.is-gapless.is-mobile'):
-            item['source'].append(
-                { "source_name": source.css('div.ui_column img.MNoMx.Vm::attr(alt)').get(),
-                  "hotel_price": source.css('div.hhlrH div.WXMFC.b.autoResize::text').get(),
-                  "hotel_orderlink": response.request.url,
-                }
-            )
+        item['hotel_orderlink'] = response.request.url
         yield item
+
+      
 

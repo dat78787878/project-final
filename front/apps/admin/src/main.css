@@ -1,0 +1,104 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+}
+
+body {
+  box-sizing: inherit;
+  overflow: overlay;
+  color: #000000 !important;
+}
+
+@media only screen and (max-width: 820px) {
+  * {
+    font-size: 12px;
+  }
+}
+
+span,
+a {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+@media only screen and (min-width: 576px) {
+  .chakra-container {
+    max-width: 542px !important;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .chakra-container {
+    max-width: 722px !important;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .chakra-container {
+    max-width: 962px !important;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .chakra-container {
+    max-width: 1142px !important;
+  }
+}
+
+@media only screen and (min-width: 1366px) {
+  .chakra-container {
+    max-width: 1340px !important;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .chakra-container {
+    max-width: 1502px !important;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .chakra-modal__content {
+    max-width: 335px !important;
+  }
+}
+
+.chakra-container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.Toastify__toast {
+  min-height: 50px !important;
+}
+
+.Toastify__close-button--light {
+  display: none;
+}
+
+.Toastify__toast-body {
+  font-size: 0.875rem;
+  color: #000000;
+}
+
+.Toastify__toast-container--bottom-left {
+  width: fit-content;
+}
+
+@media only screen and (max-width: 820px) {
+  .Toastify__toast-container--bottom-left,
+  .Toastify__toast-container--bottom-center,
+  .Toastify__toast-container--bottom-right {
+    bottom: 10px !important;
+  }
+}
+
+div[id*='tippy'] {
+  position: absolute;
+  top: 38px !important;
+  left: 0 !important;
+}

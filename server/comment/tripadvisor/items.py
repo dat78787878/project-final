@@ -6,9 +6,7 @@
 import scrapy
 
 
-class HotelItem(scrapy.Item):
+class CommentItem(scrapy.Item):
     # define the fields for your item here like:
     hotel_name = scrapy.Field()
-    hotel_addr = scrapy.Field()
-    hotel_imagelink = scrapy.Field()
-    source = scrapy.Field()
+    comment_content = scrapy.Field()

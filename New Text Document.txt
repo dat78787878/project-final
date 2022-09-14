@@ -1,3 +1,0 @@
- scrapy crawl list
-scrapy crawl example -O comment.json
-python analys.py  
