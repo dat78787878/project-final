@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from pyvi import ViTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import NMF
+
 conn = MongoClient("mongodb://localhost:27017")
 db = conn['project_db']
 # Step 0: Load data into list
@@ -21,11 +22,16 @@ def tokenize(n):
 data = list(map(tokenize, comments))
 
 #Step 3: Vectorize
+f = open('./stop_word.txt', encoding="utf8")
+stop_word = [];
+for line in f:
+  stop_word.append(line.strip("\n"))
 
 no_features = 1000
-tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=no_features, stop_words='english')     
+tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=no_features, stop_words=stop_word)     
 tfidf =   tfidf_vectorizer.fit_transform(data)     
 tfidf_feature_names   = tfidf_vectorizer.get_feature_names_out()
+
  # get_feature_names_out
 # step 4: Run NMF
 no_topics = 20
@@ -44,6 +50,7 @@ def display_topics(H, W, feature_names, documents, no_top_words):
             if W[doc_index].argsort()[::-1][0] == topic_idx:
                 result[doc_index]['topic_id'] = topic_idx
                 result[doc_index]['topic_content'] = topic_content
+             
 
 nmf_W = nmf.transform(tfidf)
 nmf_H = nmf.components_

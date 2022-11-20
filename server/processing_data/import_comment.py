@@ -12,11 +12,22 @@ result = pd.DataFrame(result)
 
 complete_df = result[~pd.isna(result).any(axis=1)].reset_index(drop=True) #loc du lieu None
 
-complete_df['time_comment'] = complete_df['time_comment'].str.replace(' tháng ','').str.replace(' năm ','/') #loc ngay thang
-result = complete_df.to_dict(orient='records')
-
 conn = MongoClient("mongodb://localhost:27017")
 db = conn['project_db']
-collection = db['comments']
-collection.drop();
-collection.insert_many(result)
+# Step 0: Load data into list
+comment_items = db.comments
+comment_items = pd.DataFrame(list(comment_items.find()))
+
+#check xem data cu va moi co trung lp khong
+if complete_df.shape[0] != comment_items.shape[0]:
+    complete_df['time_comment'] = complete_df['time_comment'].str.replace(' tháng ','').str.replace(' năm ','/') #loc ngay thang
+    result = complete_df.to_dict(orient='records')
+
+    conn = MongoClient("mongodb://localhost:27017")
+    db = conn['project_db']
+    collection = db['comments']
+    collection.drop();
+    collection.insert_many(result)
+
+
+

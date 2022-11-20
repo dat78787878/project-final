@@ -1,6 +1,6 @@
 import Button from '@front/button';
 import TableContainer from '@front/table-container';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { TableColumn, TableData } from '../../../types/app';
 import ContainerHeader from '../../components/ContainerHeader';
 import { ContainerBody } from '../../components/_principles/styles';
@@ -12,12 +12,14 @@ import {
   ContainerFillter,
   ContainerHeaderButton,
   ContainerSearch,
+  CreatingText,
+  CreatingWrapper,
   HotelName,
   Img,
 } from './styles';
 import Search from '@front/search';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchHotels } from '../../../redux/admin/action';
+import { createHotel, fetchHotels } from '../../../redux/admin/action';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { State } from '../../../types/reducer';
 import useDebounce from '../../../utils/useDebounce';
@@ -27,13 +29,14 @@ import { generateParams } from '../../../utils/generateParams';
 import { animateScroll as scroll } from 'react-scroll';
 import { colors } from '../../components/_principles';
 import uniq from 'lodash/uniq';
+import ProgressBar from './ProgressBar';
 
 const ListCompany = () => {
   const navigate = useNavigate();
   const { search, pathname } = useLocation();
   const dispatch = useDispatch();
 
-  const { hotels, totalPage, loading } = useSelector(
+  const { hotels, totalPage, loading,createHotelLoadding } = useSelector(
     (state: State) => state.admin
   );
 
@@ -113,7 +116,6 @@ const ListCompany = () => {
       }),
       { replace: true }
     );
-
     dispatch(
       fetchHotels(
         page,
@@ -124,6 +126,10 @@ const ListCompany = () => {
           : {}
       )
     );
+  };
+
+  const handleCreateHotels = () => {
+    dispatch(createHotel());
   };
 
   // search
@@ -181,21 +187,53 @@ const ListCompany = () => {
       setSearchValue('');
     }
   }, [search]);
+
+  const [completed, setCompleted] = useState(5);
+
+  useEffect(() => {
+    let timer: any = null;
+    if (createHotelLoadding) {
+      timer = setInterval(
+        () =>
+          setCompleted((prev) => {
+            let number = prev;
+            if (prev <= 94) {
+              number = prev + Math.floor(Math.random() * 5) + 1;
+            }
+            return number;
+          }),
+        2000
+      );
+    }
+
+    if (completed > 98) {
+      clearInterval(timer);
+    }
+
+    if (completed > 98 && !createHotelLoadding) {
+      setCompleted(100);
+      clearInterval(timer);
+    }
+
+    return () => timer && clearInterval(timer);
+  }, [createHotelLoadding, completed]);
+
   return (
     <Container>
       <ContainerHeader
         title=""
         element={
           <ContainerHeaderButton style={{ width: '172px', height: '42px' }}>
-            <Link to={`/company/add`}>
+           
               <Button
+               onClick={handleCreateHotels}
                 background={colors.green.teal}
                 color={colors.white}
                 textSize="14px"
               >
                 Crawl Data
               </Button>
-            </Link>
+           
           </ContainerHeaderButton>
         }
       />
@@ -224,6 +262,14 @@ const ListCompany = () => {
           setCurrentPage={handleChangePage}
           currentPage={currentPage}
         />
+      )}
+       {createHotelLoadding && (
+        <CreatingWrapper>
+          <CreatingText>
+            <ProgressBar bgcolor={colors.green.teal} completed={completed} />
+            処理中…しばらくお待ちください。
+          </CreatingText>
+        </CreatingWrapper>
       )}
     </Container>
   );

@@ -22,6 +22,16 @@ export const adminRoutes: Array<RouteType> = [
     isPublic: true,
   },
   {
+    path: '/login',
+    element: (
+      <LayoutWrap>
+        <Home />
+      </LayoutWrap>
+    ),
+    exact: true,
+    isPublic: true,
+  },
+  {
     path: '/list_comment',
     element: (
       <LayoutWrap>

@@ -123,7 +123,9 @@ const ListComment = () => {
       )
     );
   };
-
+  const handleAnalys = () => {
+    dispatch(createHotel());
+  };
   // search
   useEffect(() => {
     dispatch(
@@ -187,6 +189,7 @@ const ListComment = () => {
           <ContainerHeaderButton style={{ width: '172px', height: '42px' }}>
             <Link to={`/company/add`}>
               <Button
+               onClick={handleAnalys}
                 background={colors.green.teal}
                 color={colors.white}
                 textSize="14px"

@@ -49,5 +49,9 @@ no_top_words = 20
 
 display_topics(nmf_H, nmf_W, tfidf_feature_names, data, no_top_words)
 
+collection = db['comments']
+collection.drop()
+collection.insert_many(result)
+
 
 

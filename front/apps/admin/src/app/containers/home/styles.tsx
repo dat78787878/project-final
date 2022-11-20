@@ -45,3 +45,30 @@ export const Img = styled.img`
 export const ColItems = styled.div``;
 
 export const ContainerHeaderButton = styled.div``;
+
+export const CreatingWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const CreatingText = styled.div`
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${colors.black};
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 90%;
+  max-width: 600px;
+  padding: 24px 20px 20px;
+  align-items: center;
+  background-color: ${colors.white};
+  border-radius: 5px;
+`;

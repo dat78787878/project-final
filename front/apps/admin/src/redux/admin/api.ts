@@ -17,3 +17,12 @@ export const fetchComment = (form: any) => {
     },
   });
 };
+
+export const createHotel = () => {
+  return axiosConn.post(`/api/v1/crawlData`);
+};
+
+
+export const createAnalys = () => {
+  return axiosConn.post(`/api/v1/analysData`);
+};

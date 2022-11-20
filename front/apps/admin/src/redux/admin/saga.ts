@@ -40,10 +40,42 @@ function* fetchComment(action: any): any {
   }
 }
 
+function* createHotel(action: any): any {
+  try {
+    const res = yield call(API.createHotel);
+    if (!res.data.success) {
+      throw res.data.errors;
+    }
+    yield put(ACTIONS.createHotelSuccess(res.data));
+    toast.success('Success', { autoClose: 2000 });
+  } catch (error: any) {
+    yield put(ACTIONS.createHotelFailed(error?.message));
+    toast.error(error, { autoClose: 2000 });
+  }
+}
+
+function* createAnalys(action: any): any {
+  try {
+    const res = yield call(API.createAnalys);
+    if (!res.data.success) {
+      throw res.data.errors;
+    }
+    yield put(ACTIONS.createAnalysSuccess(res.data));
+    toast.success('Success', { autoClose: 2000 });
+  } catch (error: any) {
+    yield put(ACTIONS.createAnalysFailed(error?.message));
+    toast.error(error, { autoClose: 2000 });
+  }
+}
+
+
+
 
 export default function* rootSaga() {
   yield all([
     takeEvery(TYPES.FETCH_HOTELS, fetchHotels),
     takeEvery(TYPES.FETCH_COMMENT, fetchComment),
+    takeEvery(TYPES.CREATE_HOTELS, createHotel),
+    takeEvery(TYPES.CREATE_ANALYS, createAnalys),
   ]);
 }

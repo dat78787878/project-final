@@ -117,40 +117,54 @@ app.post(
     //  console.log('not found file');
     // }
     setTimeout(function () {
-      res.json({
-        status: "ok",
+      Hotel.count({}, function (err, count) {
+        Hotel.find((err, hotel) => {
+          if (err) console.log(err);
+          else {
+            res.json({
+              hotels: hotel,
+              total_pages: Math.ceil(count / 10),
+              success: true,
+            });
+          }
+        })
+          .limit(10)
+          .skip(10 * (req.query.page - 1));
       });
     }, 10000);
   }
 );
 
-app.get("/profile/:id", (req, res) => {
-  const id = req.params.id;
-  Profile.findById(id, (err, profile) => {
-    res.json(profile);
-  });
-});
+app.post(
+  "/api/v1/analysData",
+  (req, res, next) => {
+    const child = spawn("python", ["analys.py"], {
+      cwd: "D:/ki1_nam5/project_final/server/processing_data/",
+    });
 
-// app.get("/hotel", (req, res) => {
+    child.stdout.on("data", (data) => {
+      console.log(`stdout: ${data}`);
+    });
 
-//   Hotel.aggregate([
-//     {
-//       $lookup: {
-//         from: "classes",
-//         localField: "idClass",
-//         foreignField: "_id",
-//         as: "class",
-//       },
-//     },
-//   ]).exec((err, result) => {
-//     if (err) {
-//       console.log("error", err);
-//     }
-//     if (result) {
-//       res.json(result.splice(5*(req.query.page-1), 5));
-//     }
-//   });
-// });
+    child.stderr.on("data", (data) => {
+      console.log(`stderr: ${data}`);
+    });
+
+    child.on("error", (error) => console.log(`error: ${error.message}`));
+
+    child.on("close", (code) => {
+      console.log(`Analys data closed with code ${code}`);
+      next();
+    });
+  },
+  async (req, res) => {
+    setTimeout(function () {
+      res.json({
+        status: "analys ok",
+      });
+    }, 10000);
+  }
+);
 
 app.get("/api/v1/hotel", (req, res) => {
   if (req.query.page > -1) {
@@ -234,3 +248,32 @@ app.get("/api/v1/comment", (req, res) => {
     });
   }
 });
+
+// app.get("/profile/:id", (req, res) => {
+//   const id = req.params.id;
+//   Profile.findById(id, (err, profile) => {
+//     res.json(profile);
+//   });
+// });
+
+// app.get("/hotel", (req, res) => {
+
+//   Hotel.aggregate([
+//     {
+//       $lookup: {
+//         from: "classes",
+//         localField: "idClass",
+//         foreignField: "_id",
+//         as: "class",
+//       },
+//     },
+//   ]).exec((err, result) => {
+//     if (err) {
+//       console.log("error", err);
+//     }
+//     if (result) {
+//       res.json(result.splice(5*(req.query.page-1), 5));
+//     }
+//   });
+// });
+
