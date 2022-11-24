@@ -10,6 +10,7 @@ const Hotel = require("./model/Hotel");
 
 const { spawn } = require("child_process");
 var fs = require("fs");
+
 app.use(cors());
 
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -49,7 +50,7 @@ app.post(
   "/api/v1/crawlData",
   (req, res, next) => {
     const child = spawn("scrapy", ["crawl", "list"], {
-      cwd: "D:/ki1_nam5/project_final/server/hotel/",
+      cwd: process.cwd() + "/hotel/",
     });
 
     child.stdout.on("data", (data) => {
@@ -69,7 +70,7 @@ app.post(
   },
   (req, res, next) => {
     const child1 = spawn("scrapy", ["crawl", "example", "-O", "comment.json"], {
-      cwd: "D:/ki1_nam5/project_final/server/comment/",
+      cwd: process.cwd() + "/comment/",
     });
 
     child1.stdout.on("data", (data) => {
@@ -89,7 +90,7 @@ app.post(
   },
   (req, res, next) => {
     const child2 = spawn("python", ["import_comment.py"], {
-      cwd: "D:/ki1_nam5/project_final/server/processing_data/",
+      cwd: process.cwd() + "/processing_data/",
     });
 
     child2.stdout.on("data", (data) => {
@@ -138,8 +139,28 @@ app.post(
 app.post(
   "/api/v1/analysData",
   (req, res, next) => {
-    const child = spawn("python", ["analys.py"], {
-      cwd: "D:/ki1_nam5/project_final/server/processing_data/",
+    const child = spawn("python", ["test_underthesea.py"], {
+      cwd: process.cwd() + "/processing_data/",
+    });
+
+    child.stdout.on("data", (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    child.stderr.on("data", (data) => {
+      console.log(`stderr: ${data}`);
+    });
+
+    child.on("error", (error) => console.log(`error: ${error.message}`));
+
+    child.on("close", (code) => {
+      console.log(`Analys data closed with code ${code}`);
+      next();
+    });
+  },
+  (req, res, next) => {
+    const child = spawn("python", ["NMF.py"], {
+      cwd: process.cwd() + "/processing_data/",
     });
 
     child.stdout.on("data", (data) => {
@@ -165,7 +186,7 @@ app.post(
     }, 10000);
   }
 );
-
+//get all hotel
 app.get("/api/v1/hotel", (req, res) => {
   if (req.query.page > -1) {
     if (req.query.q?.search) {
@@ -206,19 +227,21 @@ app.get("/api/v1/hotel", (req, res) => {
       });
     }
   } else {
-    Hotel.find((err, hotel) => {
-      if (err) console.log(err);
-      else {
-        res.json({
-          hotels: hotel,
-          total_pages: Math.ceil(count / 10),
-          success: true,
-        });
-      }
+    Hotel.count({}, function (err, count) {
+      Hotel.find((err, hotel) => {
+        if (err) console.log(err);
+        else {
+          res.json({
+            hotels: hotel,
+            total_pages: Math.ceil(count / 10),
+            success: true,
+          });
+        }
+      });
     });
   }
 });
-
+//get all comment
 app.get("/api/v1/comment", (req, res) => {
   if (req.query.page > -1) {
     Comment.count({}, function (err, count) {
@@ -236,17 +259,43 @@ app.get("/api/v1/comment", (req, res) => {
         .skip(10 * (req.query.page - 1));
     });
   } else {
-    Comment.find((err, comment) => {
-      if (err) console.log(err);
-      else {
-        res.json({
-          comments: comment,
-          total_pages: Math.ceil(count / 10),
-          success: true,
-        });
-      }
+    Comment.count({}, function (err, count) {
+      Comment.find((err, comment) => {
+        if (err) console.log(err);
+        else {
+          res.json({
+            comments: comment,
+            total_pages: Math.ceil(count / 10),
+            success: true,
+          });
+        }
+      });
     });
   }
+});
+
+//detail hotel
+app.get("/api/v1/hotel/:id", (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  Hotel.aggregate([
+    { $match: { hotel_name: id } },
+    {
+      $lookup: {
+        from: "comments",
+        localField: "hotel_name",
+        foreignField: "hotel_name",
+        as: "list_comment",
+      },
+    },
+  ]).exec((err, result) => {
+    if (err) {
+      console.log("error", err);
+    }
+    if (result) {
+      res.json({ detailHotel: result[0], success: true });
+    }
+  });
 });
 
 // app.get("/profile/:id", (req, res) => {
@@ -276,4 +325,3 @@ app.get("/api/v1/comment", (req, res) => {
 //     }
 //   });
 // });
-

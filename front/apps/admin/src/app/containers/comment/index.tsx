@@ -14,7 +14,11 @@ import {
 } from './styles';
 import Search from '@front/search';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchComment } from '../../../redux/admin/action';
+import {
+  createAnalys,
+  createHotel,
+  fetchComment,
+} from '../../../redux/admin/action';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { State } from '../../../types/reducer';
 import useDebounce from '../../../utils/useDebounce';
@@ -48,7 +52,7 @@ const ListComment = () => {
       name: 'Hotel Name',
       props: {
         paddingLeft: '24px',
-        width: '10%',
+        width: '15%',
       },
     },
     {
@@ -60,7 +64,7 @@ const ListComment = () => {
     {
       name: 'Comment',
       props: {
-        width: '15%',
+        width: '25%',
       },
     },
     {
@@ -70,9 +74,15 @@ const ListComment = () => {
       },
     },
     {
+      name: 'IdTopic',
+      props: {
+        width: '10%',
+      },
+    },
+    {
       name: 'Topic',
       props: {
-        width: '20%',
+        width: '30%',
       },
     },
   ];
@@ -82,8 +92,14 @@ const ListComment = () => {
     return comments?.map((comment: any) => ({
       hotelName: <HotelName>{comment.hotel_name}</HotelName>,
       userName: <Address>{comment.user_name}</Address>,
-      commentDetail: <Address title={comment.comment_detail}>{comment.comment_detail}</Address>,
+      commentDetail: (
+        <Address title={comment.comment_detail}>
+          {comment.comment_detail}
+        </Address>
+      ),
+
       timeComment: <Address>{comment.time_comment}</Address>,
+      topicID: <Address>{comment.topic_id}</Address>,
       topicContent: <Address>{comment.topic_content}</Address>,
       link: ``,
     }));
@@ -124,7 +140,7 @@ const ListComment = () => {
     );
   };
   const handleAnalys = () => {
-    dispatch(createHotel());
+    dispatch(createAnalys());
   };
   // search
   useEffect(() => {
@@ -187,16 +203,14 @@ const ListComment = () => {
         title=""
         element={
           <ContainerHeaderButton style={{ width: '172px', height: '42px' }}>
-            <Link to={`/company/add`}>
-              <Button
-               onClick={handleAnalys}
-                background={colors.green.teal}
-                color={colors.white}
-                textSize="14px"
-              >
-                Analysis
-              </Button>
-            </Link>
+            <Button
+              onClick={handleAnalys}
+              background={colors.green.teal}
+              color={colors.white}
+              textSize="14px"
+            >
+              Analysis
+            </Button>
           </ContainerHeaderButton>
         }
       />

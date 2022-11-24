@@ -15,6 +15,22 @@ export const fetchHotelsFailed = (error: any) => ({
   payload: error,
 });
 
+export const fetchHotelDetail = (id:any) => ({
+  type: TYPES.FETCH_HOTEL_DETAIL,
+  payload: id,
+});
+
+export const fetchHotelDetailSuccess = (data: any) => ({
+  type: TYPES.FETCH_HOTEL_DETAIL_SUCCESS,
+  payload: data,
+});
+
+export const fetchHotelDetailFailed = (error: any) => ({
+  type: TYPES.FETCH_HOTEL_DETAIL_FAILED,
+  payload: error,
+});
+
+
 export const fetchComment = (page: number, searchForm: any) => ({
   type: TYPES.FETCH_COMMENT,
   payload: { page, searchForm },

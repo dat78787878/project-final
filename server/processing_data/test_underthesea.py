@@ -19,6 +19,6 @@ for doc_index,value in enumerate(listComments):
 conn = MongoClient("mongodb://localhost:27017")
 db = conn['project_db']
 collection = db['comments']
-collection.drop();
+collection.drop()
 collection.insert_many(listComments)
 

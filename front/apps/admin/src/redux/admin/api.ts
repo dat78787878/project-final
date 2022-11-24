@@ -9,6 +9,10 @@ export const fetchHotels = (form: any) => {
   });
 };
 
+export const fetchHotelDetail = (id: any) => {
+  return axiosConn.get(`/api/v1/hotel/${id}`);
+};
+
 export const fetchComment = (form: any) => {
   return axiosConn.get('/api/v1/comment', {
     params: {

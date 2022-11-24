@@ -6,6 +6,7 @@ const initState = {
   error: null,
   totalPage: 0,
   loading: false,
+  detailHotel:null,
   createHotelLoadding: false
 };
 
@@ -26,6 +27,22 @@ export default function commentReducer(state: any = initState, action: any) {
     case TYPES.FETCH_HOTELS_FAILED: {
       return { ...state, error: action.payload };
     }
+
+    case TYPES.FETCH_HOTEL_DETAIL: {
+      return { ...state, loading: true };
+    }
+    case TYPES.FETCH_HOTEL_DETAIL_SUCCESS: {
+      return {
+        ...state,
+        detailHotel: action.payload,
+        error: null,
+        loading: false,
+      };
+    }
+    case TYPES.FETCH_HOTEL_DETAIL_FAILED: {
+      return { ...state, error: action.payload, loading: false, };
+    }
+
     case TYPES.FETCH_COMMENT: {
       return { ...state, loading: true };
     }

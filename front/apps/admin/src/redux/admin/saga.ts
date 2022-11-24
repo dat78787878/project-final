@@ -22,6 +22,24 @@ function* fetchHotels(action: any): any {
   }
 }
 
+function* fetchHotelDetail(action: any): any {
+  try {
+    const res = yield call(API.fetchHotelDetail, action.payload);
+    if (!res.data.success) {
+      throw new Error(res.data.errors[0]);
+    }
+  
+    yield put(
+      ACTIONS.fetchHotelDetailSuccess(
+        res?.data.detailHotel
+      )
+    );
+  } catch (error) {
+    yield put(ACTIONS.fetchHotelDetailFailed(error));
+  }
+}
+
+
 function* fetchComment(action: any): any {
   try {
     const res = yield call(API.fetchComment, action.payload);
@@ -77,5 +95,6 @@ export default function* rootSaga() {
     takeEvery(TYPES.FETCH_COMMENT, fetchComment),
     takeEvery(TYPES.CREATE_HOTELS, createHotel),
     takeEvery(TYPES.CREATE_ANALYS, createAnalys),
+    takeEvery(TYPES.FETCH_HOTEL_DETAIL,fetchHotelDetail)
   ]);
 }

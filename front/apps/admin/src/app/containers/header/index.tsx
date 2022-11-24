@@ -16,22 +16,20 @@ import {
   StyleSetting,
   StyleWrapper,
 } from './styles';
-import { Database} from 'react-feather';
+import { Database } from 'react-feather';
 
 import CompanyIcon from '../../../assets/images/icon_hotel.png';
 import Logo from '../../../assets/images/logo.jpg';
 
 const Header = () => {
-
   return (
     <StyleHeader>
       <Container maxW="container.xl">
         <StyleWrapper>
           <StyleLeft>
-            <Link to="/company">
+            <Link to="/admin">
               <StyleLogo>
                 <ImageLog src={Logo} alt="logo" />
-          
               </StyleLogo>
             </Link>
             <StyleMenu>
@@ -57,11 +55,8 @@ const Header = () => {
                   Comment
                 </Inquiry>
               </NavLink>
-           
             </StyleMenu>
           </StyleLeft>
-
-        
         </StyleWrapper>
       </Container>
     </StyleHeader>

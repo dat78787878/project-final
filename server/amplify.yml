@@ -1,0 +1,52 @@
+version: 1
+applications:
+  # - appRoot: apps/master
+  #   env:
+  #     variables:
+  #       key: apps/master
+  #   customHeaders:
+  #     - pattern: '**/*'
+  #       headers:
+  #         - key: 'custom-header-name-1'
+  #           value: 'custom-header-value-1'
+  #   frontend:
+  #     phases:
+  #       preBuild:
+  #         commands:
+  #           - yarn global add nx
+  #           - yarn install
+  #       build:
+  #         commands:
+  #           - yarn build master --configuration=production
+  #     artifacts:
+  #       baseDirectory: ../../dist/apps/master
+  #       files:
+  #         - '**/*'
+  #     cache:
+  #       paths:
+  #         - node_modules/**/*
+  - appRoot: apps/admin
+    env:
+      variables:
+        key: apps/admin
+    customHeaders:
+      - pattern: '**/*'
+        headers:
+          - key: 'custom-header-name-2'
+            value: 'custom-header-value-2'
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - yarn global add nx
+            - yarn install
+        build:
+          commands:
+            - yarn build admin --configuration=staging
+      artifacts:
+        baseDirectory: ../../dist/apps/admin
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*

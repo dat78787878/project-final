@@ -36,7 +36,7 @@ const ListCompany = () => {
   const { search, pathname } = useLocation();
   const dispatch = useDispatch();
 
-  const { hotels, totalPage, loading,createHotelLoadding } = useSelector(
+  const { hotels, totalPage, loading, createHotelLoadding } = useSelector(
     (state: State) => state.admin
   );
 
@@ -80,13 +80,15 @@ const ListCompany = () => {
   const tableData: TableData[] = useMemo(() => {
     if (!hotels) return [];
     return hotels?.map((hotel: any) => ({
-      hotelName: <HotelName>{hotel.hotel_name}</HotelName>,
+      hotelName: (
+        <Link to={`/admin/${hotel.hotel_name}`}>
+          <HotelName>{hotel.hotel_name}</HotelName>
+        </Link>
+      ),
       hotelAddr: <Address>{hotel.hotel_addr}</Address>,
       image: (
         <ColItems>
-          <Img src={hotel.hotel_imagelink}>
-         
-        </Img>
+          <Img src={hotel.hotel_imagelink}></Img>
         </ColItems>
       ),
       hotelOrderLink: <Address>{hotel.hotel_orderlink}</Address>,
@@ -139,7 +141,7 @@ const ListCompany = () => {
         currentPage,
         debouncedSearchTerm
           ? {
-            search: debouncedSearchTerm,
+              search: debouncedSearchTerm,
             }
           : {}
       )
@@ -224,16 +226,14 @@ const ListCompany = () => {
         title=""
         element={
           <ContainerHeaderButton style={{ width: '172px', height: '42px' }}>
-           
-              <Button
-               onClick={handleCreateHotels}
-                background={colors.green.teal}
-                color={colors.white}
-                textSize="14px"
-              >
-                Crawl Data
-              </Button>
-           
+            <Button
+              onClick={handleCreateHotels}
+              background={colors.green.teal}
+              color={colors.white}
+              textSize="14px"
+            >
+              Crawl Data
+            </Button>
           </ContainerHeaderButton>
         }
       />
@@ -263,11 +263,11 @@ const ListCompany = () => {
           currentPage={currentPage}
         />
       )}
-       {createHotelLoadding && (
+      {createHotelLoadding && (
         <CreatingWrapper>
           <CreatingText>
             <ProgressBar bgcolor={colors.green.teal} completed={completed} />
-            処理中…しばらくお待ちください。
+            Loadinggg.......!
           </CreatingText>
         </CreatingWrapper>
       )}

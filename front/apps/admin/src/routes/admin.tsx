@@ -1,7 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import Home from '../app/containers/home';
 import Comment from '../app/containers/comment';
-import LayoutWrap from '../app/containers/layout-wrap';
+import DetailHotel from '../app/containers/detail_hotel';
+import LayoutWrap from '../app/containers/layout_wrap';
 import { RouteType } from '../types/app';
 
 export const adminRoutes: Array<RouteType> = [
@@ -16,6 +17,16 @@ export const adminRoutes: Array<RouteType> = [
     element: (
       <LayoutWrap>
         <Home />
+      </LayoutWrap>
+    ),
+    exact: true,
+    isPublic: true,
+  },
+  {
+    path: '/admin/:id',
+    element: (
+      <LayoutWrap>
+        <DetailHotel />
       </LayoutWrap>
     ),
     exact: true,

@@ -3,7 +3,7 @@ import { RouteType } from '../types/app';
 import { routes } from '../routes';
 import PrivateRoute from '@front/private-route';
 import { useSelector } from 'react-redux';
-import NotMatch from './containers/notMatch';
+import NotMatch from './containers/not_match';
 
 const publicRoutes: Array<RouteType> = [];
 

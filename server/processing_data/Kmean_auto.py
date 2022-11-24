@@ -38,9 +38,9 @@ for line in f:
 
 
 no_features = 1000
-tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=no_features, stop_words='english') 
+tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=no_features, stop_words=stop_word) 
 # Step 4: Run    
-tfidf =   tfidf_vectorizer.fit_transform(datatest)     
+tfidftest =   tfidf_vectorizer.fit_transform(datatest)     
 
 RAND_STATE=50  # for reproducibility and consistency
 folds=3
@@ -56,14 +56,11 @@ k_means = KMeans()  # sets jobs equal to number of cores
 
 ensemble =  GridSearchCV(estimator=k_means, param_grid = hyperparams, cv = 2, n_jobs=-1)
 
-ensemble.fit(tfidf)
+ensemble.fit(tfidftest)
 
 print(" Results from Grid Search " )
 print("\n The best parameters across ALL searched params:\n",ensemble.best_params_)
 y = ensemble.best_params_
-print(y["max_iter"])
-print(y["n_clusters"])
-print(y["n_init"])
 k = y["n_clusters"]
 model = KMeans(n_clusters=k, init='k-means++', max_iter=y["max_iter"], n_init=y["n_init"])
 
@@ -71,30 +68,28 @@ model = KMeans(n_clusters=k, init='k-means++', max_iter=y["max_iter"], n_init=y[
 data = list(map(tokenize, comments1))
 tfidf =   tfidf_vectorizer.fit_transform(data) 
 tfidf_feature_names   = tfidf_vectorizer.get_feature_names_out()
-print(tfidf_feature_names)
-# model.fit(tfidf)
-# order_centroids = model.cluster_centers_.argsort()[:,::-1]
 
-# # Step 6: Display result
-# result = list(comment_items)
-# def display_topics(H, W, feature_names, documents, no_top_words):
-#   for i in range(k):
-#     topic_content = " ".join([feature_names[j] for j in order_centroids[i, :20]])
-#     for doc_index,value in enumerate(documents):
-#       if W[doc_index].argsort()[::-1][0] == i:
-#         result[doc_index]['topic_id_kmean'] = i
-#         result[doc_index]['topic_content_kmean'] = topic_content
+model.fit(tfidf)
+order_centroids = model.cluster_centers_.argsort()[:,::-1] #sap xep do quan trong cua tu trong cau
+
+# Step 6: Display result
+result = list(comment_items)
+def display_topics(W, feature_names, documents, no_top_words):
+  for i in range(k):
+    topic_content = " ".join([feature_names[j] for j in order_centroids[i, :no_top_words]])
+    for doc_index,value in enumerate(documents):
+      if W[doc_index] == i:
+        result[doc_index]['topic_id_kmean'] = i
+        result[doc_index]['topic_content_kmean'] = topic_content
             
-# nmf_W = model.transform(tfidf)
-# nmf_H = model.labels_
-# no_top_words = 20
+nmf_W = model.predict(tfidf)
 
-# display_topics(nmf_H, nmf_W, tfidf_feature_names, data, no_top_words)
+no_top_words = 20
 
-# # max_iter': 400, 'n_clusters': 10, 'n_init': 10
+display_topics(nmf_W, tfidf_feature_names, data, no_top_words)
 
-# # print(result)
+# max_iter': 400, 'n_clusters': 10, 'n_init': 10
 
-# collection = db['comments']
-# collection.drop()
-# collection.insert_many(result)
+collection = db['comments']
+collection.drop()
+collection.insert_many(result)
