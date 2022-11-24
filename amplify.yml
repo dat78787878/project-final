@@ -4,7 +4,6 @@ applications:
       phases:
         preBuild:
           commands:
-            - cd front
             - yarn global add nx
             - yarn install
         build:
