@@ -10,7 +10,7 @@ applications:
           commands:
             - yarn build admin
       artifacts:
-        baseDirectory: ../../dist/apps/admin
+        baseDirectory: ../../../dist/apps/admin
         files:
           - '**/*'
       cache:
