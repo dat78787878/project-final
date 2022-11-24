@@ -1,0 +1,19 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - cd front
+            - yarn global add nx
+            - yarn install
+        build:
+          commands:
+            - yarn build admin
+      artifacts:
+        baseDirectory: ../../dist/apps/admin
+        files:
+          - '**/*'
+      cache:
+        paths: []
+    appRoot: front/apps/admin
