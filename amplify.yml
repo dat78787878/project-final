@@ -6,13 +6,14 @@ applications:
           commands:
             - yarn global add nx
             - yarn install
+            - npm install
         build:
           commands:
             - yarn build admin
       artifacts:
-        baseDirectory: ../../../dist/apps/admin
+        baseDirectory: .//../../dist/apps/admin
         files:
           - '**/*'
       cache:
         paths: []
-    appRoot: front/apps/admin
+    appRoot: front
