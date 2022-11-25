@@ -186,6 +186,10 @@ app.post(
     }, 10000);
   }
 );
+
+app.get("", (req, res) => {
+  res.json("hello");
+});
 //get all hotel
 app.get("/api/v1/hotel", (req, res) => {
   if (req.query.page > -1) {
