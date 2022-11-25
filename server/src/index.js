@@ -26,25 +26,25 @@ app.listen(port, () => {
   console.log("app running on port " + port);
 });
 
-const CrawlHotel = async () => {
-  const child = spawn("scrapy", ["crawl", "list"], {
-    cwd: "D:/ki1_nam5/project/hotel/",
-  });
+// const CrawlHotel = async () => {
+//   const child = spawn("scrapy", ["crawl", "list"], {
+//     cwd: "D:/ki1_nam5/project/hotel/",
+//   });
 
-  child.stdout.on("data", (data) => {
-    console.log(`stdout: ${data}`);
-  });
+//   child.stdout.on("data", (data) => {
+//     console.log(`stdout: ${data}`);
+//   });
 
-  child.stderr.on("data", (data) => {
-    console.log(`stderr: ${data}`);
-  });
+//   child.stderr.on("data", (data) => {
+//     console.log(`stderr: ${data}`);
+//   });
 
-  child.on("error", (error) => console.log(`error: ${error.message}`));
+//   child.on("error", (error) => console.log(`error: ${error.message}`));
 
-  child.on("close", (code) => {
-    console.log(`Crawling data closed with code ${code}`);
-  });
-};
+//   child.on("close", (code) => {
+//     console.log(`Crawling data closed with code ${code}`);
+//   });
+// };
 
 app.post(
   "/api/v1/crawlData",
