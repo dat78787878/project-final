@@ -1,7 +1,7 @@
 let url: string | undefined = '';
 
 if (process.env['NODE_ENV'] === 'development') {
-  url = 'http://api.do-thanh-dat.tech:8000/';
+  url = 'http://52.194.87.144:8000/';
 } else {
   if (
     process.env['NX_DOMAIN_PROD'] &&
