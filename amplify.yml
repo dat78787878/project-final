@@ -9,7 +9,7 @@ applications:
             - npm install
         build:
           commands:
-            - yarn build admin
+            - yarn build admin --configuration=staging
       artifacts:
         baseDirectory: /dist/apps/admin
         files:
