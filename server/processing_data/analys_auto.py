@@ -14,7 +14,7 @@ scorers = {
         'recall_score': make_scorer(recall_score),
         'accuracy_score': make_scorer(accuracy_score)
         }
-conn = MongoClient("mongodb://localhost:27017")
+conn = MongoClient("mongodb+srv://admin:Ao0zkKmeMJpb8ojC@cluster0.wlohl.mongodb.net/?retryWrites=true&w=majority")
 db = conn['project_db']
 # Step 0: Load data into list
 comment_items = db.comments

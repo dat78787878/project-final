@@ -5,7 +5,7 @@ from pyvi import ViTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import NMF
 
-conn = MongoClient("mongodb://localhost:27017")
+conn = MongoClient("mongodb+srv://admin:Ao0zkKmeMJpb8ojC@cluster0.wlohl.mongodb.net/?retryWrites=true&w=majority")
 db = conn['project_db']
 # Step 0: Load data into list
 comment_items = db.comments

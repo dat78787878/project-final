@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from underthesea import sentiment
 import numpy as np
 
-conn = MongoClient("mongodb://localhost:27017")
+conn = MongoClient("mongodb+srv://admin:Ao0zkKmeMJpb8ojC@cluster0.wlohl.mongodb.net/?retryWrites=true&w=majority")
 db = conn['project_db']
 # Step 0: Load data into list
 comment_items = db.comments
@@ -16,8 +16,6 @@ listComments = list(comment_items.find())
 for doc_index,value in enumerate(listComments):
    value['sentiment_check'] = sentiment(value['comment_detail'])
 
-conn = MongoClient("mongodb://localhost:27017")
-db = conn['project_db']
 collection = db['comments']
 collection.drop()
 collection.insert_many(listComments)

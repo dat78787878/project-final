@@ -25,7 +25,6 @@ class ExampleSpider(scrapy.Spider):
                 'user_name': comment.css('a.uyyBf::text').get(),
                 'time_comment': comment.css('span.teHYY::text').get(),
                 'comment_detail':  comment.css('q.QewHA span::text').get(),
-                'avatar_user':  comment.css('a.ui_social_avatar > img::attr(src)').get(),
             }
 
         next_page =  response.css('a.next::attr(href)').get()

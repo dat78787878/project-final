@@ -1,5 +1,6 @@
 import axiosConn from '../../axiosConn';
 import { setQuery } from '../../utils/setQuery';
+
 export const fetchHotels = (form: any) => {
   return axiosConn.get('/api/v1/hotel', {
     params: {

@@ -11,7 +11,7 @@ from pymongo import MongoClient
 class TripadvisorPipeline:
 
     def __init__(self): 
-        self.conn = MongoClient("mongodb://localhost:27017")
+        self.conn = MongoClient("mongodb+srv://admin:Ao0zkKmeMJpb8ojC@cluster0.wlohl.mongodb.net/?retryWrites=true&w=majority")
         db = self.conn['project_db']
         self.collection = db['hotels']
 

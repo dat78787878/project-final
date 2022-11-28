@@ -64,7 +64,7 @@ const ListComment = () => {
     {
       name: 'Comment',
       props: {
-        width: '25%',
+        width: '20%',
       },
     },
     {
@@ -82,7 +82,13 @@ const ListComment = () => {
     {
       name: 'Topic',
       props: {
-        width: '30%',
+        width: '25%',
+      },
+    },
+    {
+      name: 'Sentiment',
+      props: {
+        width: '15%',
       },
     },
   ];
@@ -101,6 +107,7 @@ const ListComment = () => {
       timeComment: <Address>{comment.time_comment}</Address>,
       topicID: <Address>{comment.topic_id}</Address>,
       topicContent: <Address>{comment.topic_content}</Address>,
+      sentimentCheck: <Address>{comment.sentiment_check}</Address>,
       link: ``,
     }));
   }, [comments]);

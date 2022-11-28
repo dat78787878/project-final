@@ -8,7 +8,7 @@ from sklearn.preprocessing import normalize, MinMaxScaler
 from sklearn.model_selection import KFold, GridSearchCV
 from sklearn.metrics import silhouette_score
 from sklearn.model_selection import train_test_split
-conn = MongoClient("mongodb://localhost:27017")
+conn = MongoClient("mongodb+srv://admin:Ao0zkKmeMJpb8ojC@cluster0.wlohl.mongodb.net/?retryWrites=true&w=majority")
 db = conn['project_db']
 # Step 0: Load data into list
 comment_items = db.comments

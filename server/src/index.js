@@ -49,26 +49,6 @@ app.listen(port, () => {
 app.post(
   "/api/v1/crawlData",
   (req, res, next) => {
-    const child = spawn("scrapy", ["crawl", "list"], {
-      cwd: process.cwd() + "/hotel/",
-    });
-
-    child.stdout.on("data", (data) => {
-      console.log(`stdout: ${data}`);
-    });
-
-    child.stderr.on("data", (data) => {
-      console.log(`stderr: ${data}`);
-    });
-
-    child.on("error", (error) => console.log(`error: ${error.message}`));
-
-    child.on("close", (code) => {
-      console.log(`Crawling data closed with code ${code}`);
-      next();
-    });
-  },
-  (req, res, next) => {
     const child1 = spawn("scrapy", ["crawl", "example", "-O", "comment.json"], {
       cwd: process.cwd() + "/comment/",
     });
@@ -108,6 +88,27 @@ app.post(
       next();
     });
   },
+  (req, res, next) => {
+    const child = spawn("scrapy", ["crawl", "list"], {
+      cwd: process.cwd() + "/hotel/",
+    });
+
+    child.stdout.on("data", (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    child.stderr.on("data", (data) => {
+      console.log(`stderr: ${data}`);
+    });
+
+    child.on("error", (error) => console.log(`error: ${error.message}`));
+
+    child.on("close", (code) => {
+      console.log(`Crawling data closed with code ${code}`);
+      next();
+    });
+  },
+
   async (req, res) => {
     // var filePath = 'D:/ki1_nam5/project/comment/comment.json';
     // if (fs.existsSync(filePath)) {
@@ -181,7 +182,7 @@ app.post(
   async (req, res) => {
     setTimeout(function () {
       res.json({
-        status: "analys ok",
+        success: true,
       });
     }, 10000);
   }
