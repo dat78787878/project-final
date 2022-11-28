@@ -1,7 +1,7 @@
 let url: string | undefined = '';
 
 if (process.env['NODE_ENV'] === 'development') {
-  url = 'http://localhost:8000/';
+  url = 'http://api.do-thanh-dat.tech:8000/';
 } else {
   if (
     process.env['NX_DOMAIN_PROD'] &&
@@ -12,5 +12,5 @@ if (process.env['NODE_ENV'] === 'development') {
     url = process.env['NX_URL_STAGING'];
   }
 }
-
+console.log("url",url)
 export const baseUrl = url;
