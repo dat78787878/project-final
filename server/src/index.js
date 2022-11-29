@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 
 const db = require("./db");
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 80;
 const Comment = require("./model/Comment");
 const Hotel = require("./model/Hotel");
 
