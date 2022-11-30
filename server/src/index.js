@@ -180,11 +180,20 @@ app.post(
     });
   },
   async (req, res) => {
-    setTimeout(function () {
-      res.json({
-        success: true,
-      });
-    }, 10000);
+    Comment.count({}, function (err, count) {
+      Comment.find((err, comment) => {
+        if (err) console.log(err);
+        else {
+          res.json({
+            comments: comment,
+            total_pages: Math.ceil(count / 10),
+            success: true,
+          });
+        }
+      })
+        .limit(10)
+        .skip(10 * (req.query.page - 1));
+    });
   }
 );
 

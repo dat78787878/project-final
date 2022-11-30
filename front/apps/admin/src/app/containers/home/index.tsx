@@ -200,7 +200,7 @@ const ListCompany = () => {
           setCompleted((prev) => {
             let number = prev;
             if (prev <= 94) {
-              number = prev + Math.floor(Math.random() * 5) + 1;
+              number = prev + Math.floor(Math.random() * 4) + 1;
             }
             return number;
           }),
