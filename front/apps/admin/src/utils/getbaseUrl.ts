@@ -1,7 +1,7 @@
 let url: string | undefined = '';
 
 if (process.env['NODE_ENV'] === 'development') {
-  url = 'http://localhost:80/';
+  url = 'http://localhost/';
  
 } else {
   if (

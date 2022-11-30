@@ -129,11 +129,9 @@ app.post(
               success: true,
             });
           }
-        })
-          .limit(10)
-          .skip(10 * (req.query.page - 1));
+        }).limit(10);
       });
-    }, 10000);
+    }, 50000);
   }
 );
 

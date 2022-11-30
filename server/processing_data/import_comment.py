@@ -17,9 +17,16 @@ complete_df = result[~pd.isna(result).any(axis=1)].reset_index(drop=True) #loc d
 
 conn = MongoClient("mongodb+srv://admin:Ao0zkKmeMJpb8ojC@cluster0.wlohl.mongodb.net/?retryWrites=true&w=majority")
 db = conn['project_db']
+
+#drop data hotels cu
+collection1 = db['hotels']
+collection1.drop()
+
 # Step 0: Load data into list
 comment_items = db.comments
 comment_items = pd.DataFrame(list(comment_items.find()))
+
+
 
 def clean_text(words):
     """
@@ -50,9 +57,7 @@ if complete_df.shape[0] != comment_items.shape[0]:
     collection.drop()
     collection.insert_many(result)
 
-#drop data hotels cu
-collection1 = db['hotels']
-collection1.drop()
+
 
 
 
