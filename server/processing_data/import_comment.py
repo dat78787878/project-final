@@ -50,7 +50,7 @@ def clean_text(words):
 #check xem data cu va moi co trung lp khong
 if complete_df.shape[0] != comment_items.shape[0]:
     complete_df['comment_detail'] = complete_df['comment_detail'].apply(lambda x: clean_text(x))
-    complete_df['time_comment'] = complete_df['time_comment'].str.replace(' tháng ','').str.replace(' năm ','/') #loc ngay thang
+    # complete_df['time_comment'] = complete_df['time_comment'].str.replace(' tháng ','').str.replace(' năm ','/')
     result = complete_df.to_dict(orient='records')
 
     collection = db['comments']

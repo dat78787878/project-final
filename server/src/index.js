@@ -256,27 +256,55 @@ app.get("/api/v1/hotel", (req, res) => {
 //get all comment
 app.get("/api/v1/comment", (req, res) => {
   if (req.query.page > -1) {
-    Comment.count({}, function (err, count) {
-      Comment.find((err, comment) => {
-        if (err) console.log(err);
-        else {
-          res.json({
-            comments: comment,
-            total_pages: Math.ceil(count / 10),
-            success: true,
-          });
-        }
-      })
-        .limit(10)
-        .skip(10 * (req.query.page - 1));
-    });
+    if (req.query.q?.search) {
+      const query = new RegExp(req.query.q?.search, "i");
+
+      Comment.count({}, function (err, count) {
+        Comment.find(
+          {
+            $or: [
+              { hotel_name: query },
+              { sentiment_check: query },
+              { topic_id: req.query.q?.search },
+            ],
+          },
+          (err, comment) => {
+            if (err) console.log(err);
+            else {
+              res.json({
+                comments: comment,
+                total_pages: Math.ceil(count / 10),
+                success: true,
+              });
+            }
+          }
+        )
+          .limit(10)
+          .skip(10 * (req.query.page - 1));
+      });
+    } else {
+      Comment.count({}, function (err, count) {
+        Comment.find((err, comment) => {
+          if (err) console.log(err);
+          else {
+            res.json({
+              comments: comment,
+              total_pages: Math.ceil(count / 10),
+              success: true,
+            });
+          }
+        })
+          .limit(10)
+          .skip(10 * (req.query.page - 1));
+      });
+    }
   } else {
     Comment.count({}, function (err, count) {
-      Comment.find((err, comment) => {
+      Comment.find((err, hotel) => {
         if (err) console.log(err);
         else {
           res.json({
-            comments: comment,
+            hotels: hotel,
             total_pages: Math.ceil(count / 10),
             success: true,
           });

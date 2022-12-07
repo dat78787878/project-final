@@ -92,6 +92,15 @@ const ListComment = () => {
       },
     },
   ];
+  const changeSentiment = (value: string) => {
+    if (value === 'positive') {
+      return 'tich cuc';
+    } else if (value === 'negative') {
+      return 'tieu cuc';
+    } else if (value === null) {
+      return 'binh thuong';
+    } else return '';
+  };
 
   const tableData: TableData[] = useMemo(() => {
     if (!comments) return [];
@@ -107,7 +116,9 @@ const ListComment = () => {
       timeComment: <Address>{comment.time_comment}</Address>,
       topicID: <Address>{comment.topic_id}</Address>,
       topicContent: <Address>{comment.topic_content}</Address>,
-      sentimentCheck: <Address>{comment.sentiment_check}</Address>,
+      sentimentCheck: (
+        <Address>{changeSentiment(comment.sentiment_check)}</Address>
+      ),
       link: ``,
     }));
   }, [comments]);
@@ -140,7 +151,7 @@ const ListComment = () => {
         page,
         debouncedSearchTerm
           ? {
-              company_name_or_email_i_cont_any: debouncedSearchTerm,
+              search: debouncedSearchTerm,
             }
           : {}
       )
@@ -156,7 +167,7 @@ const ListComment = () => {
         currentPage,
         debouncedSearchTerm
           ? {
-              company_name_or_email_i_cont_any: debouncedSearchTerm,
+              search: debouncedSearchTerm,
             }
           : {}
       )
