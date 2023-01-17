@@ -15,6 +15,7 @@ export const fetchHotelDetail = (id: any) => {
 };
 
 export const fetchComment = (form: any) => {
+ 
   return axiosConn.get('/api/v1/comment', {
     params: {
       page: form.page,
@@ -30,4 +31,14 @@ export const createHotel = () => {
 
 export const createAnalys = () => {
   return axiosConn.post(`/api/v1/analysData`);
+};
+
+
+export const fetchReport = (topic: any) => {
+  return axiosConn.get(`/api/v1/report/${topic}`);
+};
+
+
+export const fetchStatistical = () => {
+  return axiosConn.get(`/api/v1/statistical`);
 };

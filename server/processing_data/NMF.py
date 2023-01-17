@@ -5,6 +5,19 @@ from pyvi import ViTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import NMF
 
+topic_content = {
+  "vị trí" : ["vị_trí"],
+  "spa,bar,bể bơi": ['spa','bar','bể_bơi'],
+  "dịch vụ": ['dịch_vụ','phục_vụ','chào_đón'],
+  "phòng,nhà hàng": ['phòng',"nhà_hàng"]
+}
+
+# text = ""
+# for x in topic_content.keys():
+#   for item in topic_content[x]:
+#     if(item == 'vị_trí'): 
+#       print(x)
+
 conn = MongoClient("mongodb+srv://admin:Ao0zkKmeMJpb8ojC@cluster0.wlohl.mongodb.net/?retryWrites=true&w=majority")
 db = conn['project_db']
 # Step 0: Load data into list
@@ -23,7 +36,7 @@ data = list(map(tokenize, comments))
 
 #Step 3: Vectorize
 f = open('./stop_word.txt', encoding="utf8")
-stop_word = [];
+stop_word = []
 for line in f:
   stop_word.append(line.strip("\n"))
 
@@ -43,13 +56,24 @@ nmf_predict = nmf.transform(tfidf)
 # Step 6: Display result
 result = list(comment_items)
 def display_topics(H, W, feature_names, documents, no_top_words):
-    for topic_idx, topic in enumerate(H):
-        topic_content = " ".join([feature_names[i] for i in topic.argsort()[:-no_top_words - 1:-1]])
-
+      for topic_idx, topic in enumerate(H):
+        #print("test"," ".join([feature_names[i] for i in topic.argsort()[:-no_top_words - 1:-1]]))
+        check = ""
+        for i in topic.argsort()[:-no_top_words - 1:-1]:
+          if(check == "done"): break
+          for key in topic_content.keys():
+            for item in topic_content[key]:
+              #print(item)
+              if(item == feature_names[i]): 
+                topic_content_detail = key #chu de cua binh luan
+                #print(index)
+                topic_id_content = list(topic_content.keys()).index(key)
+                check = "done"
+             
         for doc_index,value in enumerate(documents):
             if W[doc_index].argsort()[::-1][0] == topic_idx:
-                result[doc_index]['topic_id'] = topic_idx
-                result[doc_index]['topic_content'] = topic_content
+                result[doc_index]['topic_id'] = topic_id_content
+                result[doc_index]['topic_content'] = topic_content_detail
              
 
 nmf_W = nmf.transform(tfidf)

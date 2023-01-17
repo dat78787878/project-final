@@ -7,7 +7,9 @@ const initState = {
   totalPage: 0,
   loading: false,
   detailHotel:null,
-  createHotelLoadding: false
+  createHotelLoadding: false,
+  listHotel: [],
+  pieData: []
 };
 
 export default function commentReducer(state: any = initState, action: any) {
@@ -87,6 +89,34 @@ export default function commentReducer(state: any = initState, action: any) {
     case TYPES.CREATE_ANALYS_FAILED: {
       return { ...state, error: action.payload };
     }
+
+
+    case TYPES.FETCH_REPORT: {
+      return { ...state, loading: true };
+    }
+    case TYPES.FETCH_REPORT_SUCCESS: {
+      return { ...state,
+        listHotel: action.payload.listHotel,
+        error: null,
+        loading: false,};
+    }
+    case TYPES.FETCH_REPORT_FAILED: {
+      return { ...state, error: action.payload };
+    }
+
+    case TYPES.FETCH_STATISTICAL: {
+      return { ...state, loading: true };
+    }
+    case TYPES.FETCH_STATISTICAL_SUCCESS: {
+      return { ...state,
+        pieData: action.payload.pieData,
+        error: null,
+        loading: false,};
+    }
+    case TYPES.FETCH_STATISTICAL_FAILED: {
+      return { ...state, error: action.payload };
+    }
+
     default:
       return state;
   }

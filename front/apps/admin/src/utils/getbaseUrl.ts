@@ -1,8 +1,8 @@
 let url: string | undefined = '';
 
 if (process.env['NODE_ENV'] === 'development') {
-  url = 'http://localhost/';
- 
+  url = 'http://localhost:8000/';
+  //url = 'http://localhost/'; khi deploy dung cong 80
 } else {
   if (
     process.env['NX_DOMAIN_PROD'] &&

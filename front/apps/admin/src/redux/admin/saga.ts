@@ -46,7 +46,7 @@ function* fetchComment(action: any): any {
     if (!res.data.success) {
       throw new Error(res.data.errors[0]);
     }
-
+    console.log("res",res)
     yield put(
       ACTIONS.fetchCommentSuccess({
         comments: res?.data.comments,
@@ -86,15 +86,54 @@ function* createAnalys(action: any): any {
   }
 }
 
+function* fetchReport(action: any): any {
+  try {
+    const res = yield call(API.fetchReport, action.payload);
+    if (!res.data.success) {
+      throw new Error(res.data.errors[0]);
+    }
+    
+    yield put(
+      ACTIONS.fetchReportSuccess({
+        listHotel: res?.data.listHotel,
+      })
+    );
+  } catch (error) {
+    yield put(ACTIONS.fetchReportFailed(error));
+  }
+}
+
+
+function* fetchStatistical(): any {
+  try {
+
+    const res = yield call(API.fetchStatistical);
+    if (!res.data.success) {
+      throw new Error(res.data.errors[0]);
+    }
+    console.log("res",res)
+    yield put(
+      ACTIONS.fetchStatisticalSuccess({
+        pieData: res.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(ACTIONS.fetchStatisticalFailed(error));
+  }
+}
+
+
 
 
 
 export default function* rootSaga() {
   yield all([
+    takeEvery(TYPES.FETCH_REPORT, fetchReport),
     takeEvery(TYPES.FETCH_HOTELS, fetchHotels),
     takeEvery(TYPES.FETCH_COMMENT, fetchComment),
     takeEvery(TYPES.CREATE_HOTELS, createHotel),
     takeEvery(TYPES.CREATE_ANALYS, createAnalys),
-    takeEvery(TYPES.FETCH_HOTEL_DETAIL,fetchHotelDetail)
+    takeEvery(TYPES.FETCH_HOTEL_DETAIL,fetchHotelDetail),
+    takeEvery(TYPES.FETCH_STATISTICAL,fetchStatistical)
   ]);
 }

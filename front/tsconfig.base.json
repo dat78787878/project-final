@@ -22,7 +22,8 @@
       "@front/pagination": ["libs/pagination/src/index.ts"],
       "@front/private-route": ["libs/private-route/src/index.ts"],
       "@front/table-container": ["libs/table-container/src/index.ts"],
-      "@front/search": ["libs/search/src/index.ts"]
+      "@front/search": ["libs/search/src/index.ts"],
+      "@front/select": ["libs/select/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

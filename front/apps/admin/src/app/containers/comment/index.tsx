@@ -11,19 +11,16 @@ import {
   ContainerHeaderButton,
   ContainerSearch,
   HotelName,
+  SelectTopic,
 } from './styles';
 import Search from '@front/search';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  createAnalys,
-  createHotel,
-  fetchComment,
-} from '../../../redux/admin/action';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { createAnalys, fetchComment } from '../../../redux/admin/action';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { State } from '../../../types/reducer';
 import useDebounce from '../../../utils/useDebounce';
 import Pagination from '@front/pagination';
-import dayjs from 'dayjs';
+import Select from '@front/select';
 import { generateParams } from '../../../utils/generateParams';
 import { animateScroll as scroll } from 'react-scroll';
 import { colors } from '../../components/_principles';
@@ -44,9 +41,19 @@ const ListComment = () => {
   const [searchValue, setSearchValue] = useState<string>(
     new URLSearchParams(search).get('search') || ''
   );
+  const [topicValue, setTopicValue] = useState<string>(
+    new URLSearchParams(search).get('topic') || '100'
+  );
   const debouncedSearchTerm = useDebounce(searchValue, 500);
 
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const TOPIC_OPTIONS = [
+    { value: 100, name: 'Vui lòng chọn' },
+    { value: 0, name: 'vị trí' },
+    { value: 1, name: 'spa,bar,bể bơi' },
+    { value: 2, name: 'dịch vụ' },
+    { value: 3, name: 'phòng,nhà hàng' },
+  ];
   const column: TableColumn[] = [
     {
       name: 'Hotel Name',
@@ -58,39 +65,39 @@ const ListComment = () => {
     {
       name: 'User',
       props: {
-        width: '10%',
+        width: '15%',
       },
     },
     {
       name: 'Comment',
       props: {
-        width: '20%',
+        width: '35%',
       },
     },
     {
       name: 'Time',
       props: {
-        width: '10%',
+        width: '20%',
       },
     },
-    {
-      name: 'IdTopic',
-      props: {
-        width: '10%',
-      },
-    },
+    // {
+    //   name: 'IdTopic',
+    //   props: {
+    //     width: '10%',
+    //   },
+    // },
     {
       name: 'Topic',
-      props: {
-        width: '25%',
-      },
-    },
-    {
-      name: 'Sentiment',
       props: {
         width: '15%',
       },
     },
+    // {
+    //   name: 'Sentiment',
+    //   props: {
+    //     width: '15%',
+    //   },
+    // },
   ];
   const changeSentiment = (value: string) => {
     if (value === 'positive') {
@@ -114,11 +121,11 @@ const ListComment = () => {
       ),
 
       timeComment: <Address>{comment.time_comment}</Address>,
-      topicID: <Address>{comment.topic_id}</Address>,
+      // topicID: <Address>{comment.topic_id}</Address>,
       topicContent: <Address>{comment.topic_content}</Address>,
-      sentimentCheck: (
-        <Address>{changeSentiment(comment.sentiment_check)}</Address>
-      ),
+      // sentimentCheck: (
+      //   <Address>{changeSentiment(comment.sentiment_check)}</Address>
+      // ),
       link: ``,
     }));
   }, [comments]);
@@ -147,14 +154,7 @@ const ListComment = () => {
     );
 
     dispatch(
-      fetchComment(
-        page,
-        debouncedSearchTerm
-          ? {
-              search: debouncedSearchTerm,
-            }
-          : {}
-      )
+      fetchComment(page, { search: debouncedSearchTerm, topic: topicValue })
     );
   };
   const handleAnalys = () => {
@@ -163,17 +163,13 @@ const ListComment = () => {
   // search
   useEffect(() => {
     dispatch(
-      fetchComment(
-        currentPage,
-        debouncedSearchTerm
-          ? {
-              search: debouncedSearchTerm,
-            }
-          : {}
-      )
+      fetchComment(currentPage, {
+        search: debouncedSearchTerm,
+        topic: topicValue,
+      })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, topicValue]);
 
   // set suggestions
   useEffect(() => {
@@ -215,6 +211,7 @@ const ListComment = () => {
       setSearchValue('');
     }
   }, [search]);
+
   return (
     <Container>
       <ContainerHeader
@@ -243,6 +240,16 @@ const ListComment = () => {
               loading={loading}
             />
           </ContainerSearch>
+          <SelectTopic>
+            <Select
+              options={TOPIC_OPTIONS}
+              height="40px"
+              name="age"
+              onChange={(e) => {
+                setTopicValue(e.target.value);
+              }}
+            />
+          </SelectTopic>
         </ContainerFillter>
         <TableContainer
           column={column}

@@ -1,22 +1,18 @@
-import React, { useState } from 'react';
 import { Container } from '@chakra-ui/react';
 import { Link, NavLink } from 'react-router-dom';
-import Tippy from '@tippyjs/react/headless';
 
 import {
   CompanyList,
   ImageIcon,
   ImageLog,
   Inquiry,
-  News,
   StyleHeader,
   StyleLeft,
   StyleLogo,
   StyleMenu,
-  StyleSetting,
   StyleWrapper,
 } from './styles';
-import { Database } from 'react-feather';
+import { Database, File, PieChart } from 'react-feather';
 
 import CompanyIcon from '../../../assets/images/icon_hotel.png';
 import Logo from '../../../assets/images/logo.jpg';
@@ -53,6 +49,30 @@ const Header = () => {
                 <Inquiry>
                   <Database />
                   Comment
+                </Inquiry>
+              </NavLink>
+
+              <NavLink
+                to="/report"
+                className={({ isActive }) =>
+                  'nav-link' + (isActive ? ' active' : '')
+                }
+              >
+                <Inquiry>
+                  <File />
+                  Report
+                </Inquiry>
+              </NavLink>
+
+              <NavLink
+                to="/statistical"
+                className={({ isActive }) =>
+                  'nav-link' + (isActive ? ' active' : '')
+                }
+              >
+                <Inquiry>
+                  <PieChart />
+                  Statistical
                 </Inquiry>
               </NavLink>
             </StyleMenu>

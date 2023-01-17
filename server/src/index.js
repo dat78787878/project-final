@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -256,17 +257,36 @@ app.get("/api/v1/hotel", (req, res) => {
 //get all comment
 app.get("/api/v1/comment", (req, res) => {
   if (req.query.page > -1) {
-    if (req.query.q?.search) {
+    console.log("req.query.q?.topic", req.query.q?.topic);
+    console.log("req.query.q?.search", req.query.q?.search);
+    if (req.query.q?.search == undefined && req.query.q?.topic == undefined) {
+      console.log("vao day4");
+      Comment.count({}, function (err, count) {
+        Comment.find((err, comment) => {
+          if (err) console.log(err);
+          else {
+            res.json({
+              comments: comment,
+              total_pages: Math.ceil(count / 10),
+              success: true,
+            });
+          }
+        })
+          .limit(10)
+          .skip(10 * (req.query.page - 1));
+      });
+    } else if (req.query.q?.search && req.query.q?.topic !== 100) {
+      console.log("vao day1");
       const query = new RegExp(req.query.q?.search, "i");
+      const queryTopic = req.query.q?.topic;
 
       Comment.count({}, function (err, count) {
         Comment.find(
           {
-            $or: [
-              { hotel_name: query },
-              { sentiment_check: query },
-              { topic_id: req.query.q?.search },
-            ],
+            hotel_name: query,
+            topic_id: queryTopic,
+            // { sentiment_check: query },
+            //  { topic_id: req.query.q?.search },
           },
           (err, comment) => {
             if (err) console.log(err);
@@ -282,7 +302,61 @@ app.get("/api/v1/comment", (req, res) => {
           .limit(10)
           .skip(10 * (req.query.page - 1));
       });
+    } else if (req.query.q?.search && req.query.q?.topic === 100) {
+      console.log("vao day2");
+      const query = new RegExp(req.query.q?.search, "i");
+
+      Comment.count({}, function (err, count) {
+        Comment.find(
+          {
+            hotel_name: query,
+            // { sentiment_check: query },
+            //  { topic_id: req.query.q?.search },
+          },
+          (err, comment) => {
+            if (err) console.log(err);
+            else {
+              res.json({
+                comments: comment,
+                total_pages: Math.ceil(count / 10),
+                success: true,
+              });
+            }
+          }
+        )
+          .limit(10)
+          .skip(10 * (req.query.page - 1));
+      });
+    } else if (
+      !req.query.q?.search &&
+      req.query.q?.topic !== "100"
+
+      //  req.query.q?.topic !== undefined
+    ) {
+      console.log("vao day3");
+      const queryTopic = req.query.q?.topic;
+
+      Comment.find({
+        topic_id: queryTopic,
+      })
+        .skip(10 * (req.query.page - 1))
+        .limit(10)
+        .exec(async (err, comment) => {
+          if (err) console.log(err);
+          else {
+            const page = await Comment.countDocuments({
+              topic_id: queryTopic,
+            });
+
+            res.json({
+              comments: comment,
+              total_pages: Math.ceil(page / 10),
+              success: true,
+            });
+          }
+        });
     } else {
+      console.log("vao day4");
       Comment.count({}, function (err, count) {
         Comment.find((err, comment) => {
           if (err) console.log(err);
@@ -299,12 +373,13 @@ app.get("/api/v1/comment", (req, res) => {
       });
     }
   } else {
+    console.log("vao day5");
     Comment.count({}, function (err, count) {
-      Comment.find((err, hotel) => {
+      Comment.find((err, comment) => {
         if (err) console.log(err);
         else {
           res.json({
-            hotels: hotel,
+            comments: comment,
             total_pages: Math.ceil(count / 10),
             success: true,
           });
@@ -335,6 +410,63 @@ app.get("/api/v1/hotel/:id", (req, res) => {
     if (result) {
       res.json({ detailHotel: result[0], success: true });
     }
+  });
+});
+
+//report hotel
+app.get("/api/v1/report/:id", (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  if (id == 100) {
+    console.log("vao day");
+    Comment.distinct("hotel_name").exec((err, comment) => {
+      if (err) console.log(err);
+      else {
+        res.json({
+          listHotel: comment,
+          success: true,
+        });
+      }
+    });
+  } else {
+    Comment.find({
+      topic_id: id,
+    })
+      .distinct("hotel_name")
+      .exec((err, comment) => {
+        if (err) console.log(err);
+        else {
+          res.json({
+            listHotel: comment,
+            success: true,
+          });
+        }
+      });
+  }
+});
+
+//statistical
+app.get("/api/v1/statistical", async (req, res) => {
+  const topic1 = await Comment.countDocuments({
+    topic_id: 0,
+  });
+  const topic2 = await Comment.countDocuments({
+    topic_id: 1,
+  });
+  const topic3 = await Comment.countDocuments({
+    topic_id: 2,
+  });
+  const topic4 = await Comment.countDocuments({
+    topic_id: 3,
+  });
+  res.json({
+    data: [
+      { x: "vị trí", y: topic1 },
+      { x: "spa,bar,bể bơi", y: topic2 },
+      { x: "dịch vụ", y: topic3 },
+      { x: "phòng,nhà hàng", y: topic4 },
+    ],
+    success: true,
   });
 });
 

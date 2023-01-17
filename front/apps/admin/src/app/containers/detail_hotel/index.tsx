@@ -62,7 +62,8 @@ const DetailHotel = () => {
                   <Avatar>{item?.user_name?.trim()[0]}</Avatar>
                   <DetailComment>
                     <UserName>
-                      {item?.user_name} - {item?.time_comment}
+                      {item?.user_name} - {item?.time_comment} -{' '}
+                      {item?.topic_content}
                     </UserName>
                     <ContentComment>{item?.comment_detail}</ContentComment>
                   </DetailComment>

@@ -82,3 +82,38 @@ export const createAnalysFailed = (error: any) => ({
 });
 
 
+
+export const fetchReport = (topic: any) => ({
+  type: TYPES.FETCH_REPORT,
+  payload: topic ,
+});
+
+
+export const fetchReportSuccess = (data: any) => ({
+  type: TYPES.FETCH_REPORT_SUCCESS,
+  payload: data,
+});
+
+export const fetchReportFailed = (error: any) => ({
+  type: TYPES.FETCH_REPORT_FAILED,
+  payload: error,
+});
+
+
+export const fetchStatistical = () => ({
+  type: TYPES.FETCH_STATISTICAL
+});
+
+
+export const fetchStatisticalSuccess = (data: any) => ({
+  type: TYPES.FETCH_STATISTICAL_SUCCESS,
+  payload: data,
+});
+
+export const fetchStatisticalFailed = (error: any) => ({
+  type: TYPES.FETCH_STATISTICAL_FAILED,
+  payload: error,
+});
+
+
+
