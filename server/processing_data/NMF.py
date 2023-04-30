@@ -41,7 +41,7 @@ for line in f:
   stop_word.append(line.strip("\n"))
 
 no_features = 1000
-tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=no_features, stop_words=stop_word)     
+tfidf_vectorizer = q(max_df=0.95, min_df=2, max_features=no_features, stop_words=stop_word)     
 tfidf =   tfidf_vectorizer.fit_transform(data)     
 tfidf_feature_names   = tfidf_vectorizer.get_feature_names_out()
 

@@ -14,6 +14,8 @@ listComments = list(comment_items.find())
 for doc_index,value in enumerate(listComments):
    value['sentiment_check'] = sentiment(value['comment_detail'])
 
+print(listComments)
+
 collection = db['comments']
 collection.drop()
 collection.insert_many(listComments)

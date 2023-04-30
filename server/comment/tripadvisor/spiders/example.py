@@ -7,11 +7,9 @@ class ExampleSpider(scrapy.Spider):
 
     def parse(self, response):
         
-        for hotel in response.css('div.listing'):
-            detail_page =  hotel.css('a.property_title::attr(href)').get()
-            skip_page = response.urljoin(detail_page)
-            yield response.follow(skip_page, callback=self.start_scraping)
-
+        for item_url in response.css("div.jsTLT > a.BMQDV::attr(href)").extract():
+            yield scrapy.Request(response.urljoin(item_url), callback=self.start_scraping) # Nếu có sản phẩm thì sẽ gọi tới function parse_macbook
+        
         next_page =  response.css('a.next::attr(href)').get()
         if ExampleSpider.page_number <= 1:
             ExampleSpider.page_number += 1

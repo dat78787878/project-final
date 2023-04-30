@@ -92,20 +92,20 @@ const ListComment = () => {
         width: '15%',
       },
     },
-    // {
-    //   name: 'Sentiment',
-    //   props: {
-    //     width: '15%',
-    //   },
-    // },
+    {
+      name: 'Sentiment',
+      props: {
+        width: '15%',
+      },
+    },
   ];
   const changeSentiment = (value: string) => {
     if (value === 'positive') {
-      return 'tich cuc';
+      return 'tích cực';
     } else if (value === 'negative') {
-      return 'tieu cuc';
+      return 'tiêu cực';
     } else if (value === null) {
-      return 'binh thuong';
+      return 'bình thường';
     } else return '';
   };
 
@@ -123,9 +123,9 @@ const ListComment = () => {
       timeComment: <Address>{comment.time_comment}</Address>,
       // topicID: <Address>{comment.topic_id}</Address>,
       topicContent: <Address>{comment.topic_content}</Address>,
-      // sentimentCheck: (
-      //   <Address>{changeSentiment(comment.sentiment_check)}</Address>
-      // ),
+      sentimentCheck: (
+        <Address>{changeSentiment(comment.sentiment_check)}</Address>
+      ),
       link: ``,
     }));
   }, [comments]);

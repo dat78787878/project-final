@@ -6,6 +6,8 @@ from pymongo import MongoClient
 import numpy as np
 import re
 import io
+from cleantext import clean
+
 # Step 0: Load data into list
 f = io.open('../comment/comment.json', encoding="utf8")
 comment_items = json.load(f)
@@ -33,8 +35,8 @@ def clean_text(words):
     Text cleaning
     Returns a cleaned text
     """
-    words = str(words).lower()
-    
+    words = str(clean(words, no_emoji=True)).lower()
+ 
     # new line removal
     words = [re.sub('[^A-Za-z0-9]+\s+', ' ', sent) for sent in words]
     words = [re.sub('\!', ' ', sent) for sent in words]
@@ -51,6 +53,11 @@ def clean_text(words):
 if complete_df.shape[0] != comment_items.shape[0]:
     complete_df['comment_detail'] = complete_df['comment_detail'].apply(lambda x: clean_text(x))
     # complete_df['time_comment'] = complete_df['time_comment'].str.replace(' tháng ','').str.replace(' năm ','/')
+    
+    # xuat file sau khi da clean
+    # with open('clean.csv', 'w', encoding='utf-8') as file:complete_df.to_csv(file, index=False)
+    # with open('clean.json', 'w', encoding='utf-8') as file:complete_df.to_json(file, orient='records', force_ascii=False)
+
     result = complete_df.to_dict(orient='records')
 
     collection = db['comments']

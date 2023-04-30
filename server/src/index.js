@@ -257,10 +257,9 @@ app.get("/api/v1/hotel", (req, res) => {
 //get all comment
 app.get("/api/v1/comment", (req, res) => {
   if (req.query.page > -1) {
-    console.log("req.query.q?.topic", req.query.q?.topic);
-    console.log("req.query.q?.search", req.query.q?.search);
+
     if (req.query.q?.search == undefined && req.query.q?.topic == undefined) {
-      console.log("vao day4");
+
       Comment.count({}, function (err, count) {
         Comment.find((err, comment) => {
           if (err) console.log(err);
@@ -276,7 +275,7 @@ app.get("/api/v1/comment", (req, res) => {
           .skip(10 * (req.query.page - 1));
       });
     } else if (req.query.q?.search && req.query.q?.topic !== 100) {
-      console.log("vao day1");
+  
       const query = new RegExp(req.query.q?.search, "i");
       const queryTopic = req.query.q?.topic;
 
@@ -303,7 +302,7 @@ app.get("/api/v1/comment", (req, res) => {
           .skip(10 * (req.query.page - 1));
       });
     } else if (req.query.q?.search && req.query.q?.topic === 100) {
-      console.log("vao day2");
+  
       const query = new RegExp(req.query.q?.search, "i");
 
       Comment.count({}, function (err, count) {
@@ -333,7 +332,7 @@ app.get("/api/v1/comment", (req, res) => {
 
       //  req.query.q?.topic !== undefined
     ) {
-      console.log("vao day3");
+ 
       const queryTopic = req.query.q?.topic;
 
       Comment.find({
@@ -356,7 +355,7 @@ app.get("/api/v1/comment", (req, res) => {
           }
         });
     } else {
-      console.log("vao day4");
+
       Comment.count({}, function (err, count) {
         Comment.find((err, comment) => {
           if (err) console.log(err);
@@ -373,7 +372,7 @@ app.get("/api/v1/comment", (req, res) => {
       });
     }
   } else {
-    console.log("vao day5");
+
     Comment.count({}, function (err, count) {
       Comment.find((err, comment) => {
         if (err) console.log(err);

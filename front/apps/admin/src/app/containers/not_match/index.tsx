@@ -15,15 +15,15 @@ function NotMatch() {
       <Warning>
         <Text>404</Text>
       </Warning>
-      <Title>ページが見つかりません</Title>
-      <Content>お探しのページが見つかりません。</Content>
+      <Title>Page Not Found</Title>
+      <Content>The page you are looking for cannot be found.</Content>
       <Content>
-        一時的にアクセスできない状況にあるか、移動もしくは削除された可能性があります。
+      It may be temporarily inaccessible or may have been moved or deleted.
       </Content>
       <ButtonWrap>
         <Link to="/">
           <Button color="#fff" background="rgb(112, 112, 112)">
-            ホームページに戻る
+          Return to home page
           </Button>
         </Link>
       </ButtonWrap>
