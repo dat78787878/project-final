@@ -30,9 +30,14 @@ comments = comments.comment_detail
 
 # Step 2: Tokenizer
 def tokenize(n):
-  return ViTokenizer.tokenize(n.lower())
+  return ViTokenizer.tokenize(n)
 
 data = list(map(tokenize, comments))
+
+# with open("tokenize.txt", "w", encoding="utf-8") as file:
+#     for item in data:
+#         file.write(item + "\n")
+
 
 #Step 3: Vectorize
 f = open('./stop_word.txt', encoding="utf8")
@@ -45,7 +50,11 @@ tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=no_featur
 tfidf =   tfidf_vectorizer.fit_transform(data)     
 tfidf_feature_names   = tfidf_vectorizer.get_feature_names_out()
 
- # get_feature_names_out
+# df2 = pd.DataFrame(tfidf.toarray().transpose(),index=tfidf_feature_names)
+# print(df2)
+# with open('tfidf.csv', 'w', encoding='utf-8') as file:df2.to_csv(file, index=False)
+
+# get_feature_names_out
 # step 4: Run NMF
 no_topics = 20
 nmf = NMF(n_components=no_topics, random_state=1,  max_iter=2000, alpha_W=0.00005, alpha_H=0.00005, l1_ratio=.5, init='nndsvd').fit(tfidf)
@@ -57,7 +66,7 @@ nmf_predict = nmf.transform(tfidf)
 result = list(comment_items)
 def display_topics(H, W, feature_names, documents, no_top_words):
       for topic_idx, topic in enumerate(H):
-        #print("test"," ".join([feature_names[i] for i in topic.argsort()[:-no_top_words - 1:-1]]))
+        # print(""," ".join([feature_names[i] for i in topic.argsort()[:-no_top_words - 1:-1]]))
         check = ""
         for i in topic.argsort()[:-no_top_words - 1:-1]:
           if(check == "done"): break
@@ -83,11 +92,11 @@ no_top_words = 20
 display_topics(nmf_H, nmf_W, tfidf_feature_names, data, no_top_words)
 
 
-# Step 7: Output file
-# with open("data_comment.json", "w", encoding='utf8') as f:
-#     json.dump(result, f, ensure_ascii=False)
+# # Step 7: Output file
+# # with open("data_comment.json", "w", encoding='utf8') as f:
+# #     json.dump(result, f, ensure_ascii=False)
 
-collection = db['comments']
-collection.drop()
-collection.insert_many(result)
+# collection = db['comments']
+# collection.drop()
+# collection.insert_many(result)
 
