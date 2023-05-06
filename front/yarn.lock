@@ -7900,7 +7900,7 @@ nwsapi@^2.2.0:
   resolved "https://registry.npmjs.org/nwsapi/-/nwsapi-2.2.1.tgz"
   integrity sha512-JYOWTeFoS0Z93587vRJgASD5Ut11fYl5NyihP3KrYBvMe1FRRs6RN7m20SA/16GM4P6hTnZjT+UmDOt38UeXNg==
 
-"nx@>= 13.10 <= 15", nx@14.5.10:
+nx@^14.5.10, "nx@>= 13.10 <= 15", nx@14.5.10:
   version "14.5.10"
   resolved "https://registry.npmjs.org/nx/-/nx-14.5.10.tgz"
   integrity sha512-dqiV+zY32k98mfKFTgiQyYd9HYZmB1zoJj6gYniEuqzs6CKp8ZSpeRDaVQRxR6wEMvW9MSTA9kBg8sJ78W/NZg==

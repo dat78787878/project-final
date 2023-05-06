@@ -92,11 +92,11 @@ no_top_words = 20
 display_topics(nmf_H, nmf_W, tfidf_feature_names, data, no_top_words)
 
 
-# # Step 7: Output file
-# # with open("data_comment.json", "w", encoding='utf8') as f:
-# #     json.dump(result, f, ensure_ascii=False)
+# Step 7: Output file
+# with open("data_comment.json", "w", encoding='utf8') as f:
+#     json.dump(result, f, ensure_ascii=False)
 
-# collection = db['comments']
-# collection.drop()
-# collection.insert_many(result)
+collection = db['comments']
+collection.drop()
+collection.insert_many(result)
 
