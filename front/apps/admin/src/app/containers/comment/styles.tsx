@@ -4,10 +4,11 @@ export const ContainerFillter = styled.div`
   display: flex;
   height: 91px;
   background-color: ${colors.white};
+  align-items: center;
 `;
 
 export const ContainerSearch = styled.div`
-  padding-top: 28px;
+
   margin-left: 69px;
 `;
 
@@ -47,7 +48,7 @@ export const ColItems = styled.div``;
 export const ContainerHeaderButton = styled.div``;
 
 export const SelectTopic = styled.div`
-  padding-top: 28px;
+
   margin-left: 69px;
   width: 192px;
 
@@ -55,3 +56,13 @@ export const SelectTopic = styled.div`
     width: 100%;
   }
 `;
+
+export const ButtonSentiment = styled.div`
+margin-left:20px;
+  width: 120px;
+height: 40px;
+  @media only screen and (max-width: 767px) {
+    width: 100%;
+  }
+`;
+

@@ -12,6 +12,7 @@ import {
   ContainerSearch,
   HotelName,
   SelectTopic,
+  ButtonSentiment
 } from './styles';
 import Search from '@front/search';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +29,7 @@ import uniq from 'lodash/uniq';
 
 const ListComment = () => {
   const navigate = useNavigate();
+  const [check, setCheck] = useState<boolean>(false);
   const { search, pathname } = useLocation();
   const dispatch = useDispatch();
 
@@ -99,6 +101,47 @@ const ListComment = () => {
     //   },
     // },
   ];
+
+  const columnSentiment: TableColumn[] = [
+    {
+      name: 'Hotel Name',
+      props: {
+        paddingLeft: '24px',
+        width: '15%',
+      },
+    },
+    {
+      name: 'User',
+      props: {
+        width: '10%',
+      },
+    },
+    {
+      name: 'Comment',
+      props: {
+        width: '35%',
+      },
+    },
+    {
+      name: 'Time',
+      props: {
+        width: '15%',
+      },
+    },
+   
+    {
+      name: 'Topic',
+      props: {
+        width: '15%',
+      },
+    },
+    {
+      name: 'Sentiment',
+      props: {
+        width: '10%',
+      },
+    },
+  ];
   const changeSentiment = (value: string) => {
     if (value === 'positive') {
       return 'tích cực';
@@ -126,6 +169,27 @@ const ListComment = () => {
       // sentimentCheck: (
       //   <Address>{changeSentiment(comment.sentiment_check)}</Address>
       // ),
+      link: ``,
+    }));
+  }, [comments]);
+
+  const tableDataSentiment: TableData[] = useMemo(() => {
+    if (!comments) return [];
+    return comments?.map((comment: any) => ({
+      hotelName: <HotelName>{comment.hotel_name}</HotelName>,
+      userName: <Address>{comment.user_name}</Address>,
+      commentDetail: (
+        <Address title={comment.comment_detail}>
+          {comment.comment_detail}
+        </Address>
+      ),
+
+      timeComment: <Address>{comment.time_comment}</Address>,
+      // topicID: <Address>{comment.topic_id}</Address>,
+      topicContent: <Address>{comment.topic_content}</Address>,
+      sentimentCheck: (
+        <Address>{changeSentiment(comment.sentiment_check)}</Address>
+      ),
       link: ``,
     }));
   }, [comments]);
@@ -226,6 +290,7 @@ const ListComment = () => {
             >
               Analysis
             </Button>
+          
           </ContainerHeaderButton>
         }
       />
@@ -250,10 +315,20 @@ const ListComment = () => {
               }}
             />
           </SelectTopic>
+            <ButtonSentiment>
+            <Button
+              onClick={()=> setCheck(!check)}
+              background={colors.green.teal}
+              color={colors.white}
+              textSize="14px"
+            >
+              Sentiment
+            </Button>
+            </ButtonSentiment> 
         </ContainerFillter>
         <TableContainer
-          column={column}
-          data={tableData}
+          column={check ? columnSentiment : column}
+          data={check ? tableDataSentiment: tableData}
           loading={loading}
           noDataText="No Data"
         />
