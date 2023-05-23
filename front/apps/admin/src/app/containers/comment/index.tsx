@@ -240,7 +240,7 @@ const ListComment = () => {
     if (comments?.length > 0) {
       setSuggestions(() => {
         const list = comments.reduce(
-          (acc: any, cur: any) => [...acc, cur.hotel_name, cur.user_name],
+          (acc: any, cur: any) => [...acc, cur.hotel_name],
           []
         );
         return uniq(
